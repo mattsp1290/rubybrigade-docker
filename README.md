@@ -1,16 +1,17 @@
 # rubybrigade-docker
-Phase 2
-Move Application To Docker
+Phase 3
+Make use of Docker inheritance
+
+Inside passenger folder:
+docker build -t="irbtodo/passenger" .
 
 Inside app folder:
-docker build -t="irbtodo/phase2" .
-docker run -dit -p 80:80 irbtodo/phase2
+docker build -t="irbtodo/phase3" .
+docker run -dit -p 80:80 irbtodo/phase3
 
 Files edited:
-+ config/database.yml
-+ config/secrets.yml
-+ docker/config/app.conf
-+ docker/config/nginx.conf
-+ docker/config/passenger.conf
-+ Dockerfile
-+ Gemfile
++ app/Dockerfile
++ passenger/config/app.conf
++ passenger/config/nginx.conf
++ passenger/config/passenger.conf
++ passenger/Dockerfile
