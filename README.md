@@ -9,7 +9,6 @@ docker build -t="irbtodo/passenger" .
 
 Inside app folder:
 docker build -t="irbtodo/phase4" .
-docker run -dit -p 80:80 irbtodo/phase4
 
 At root:
 docker-compose up
