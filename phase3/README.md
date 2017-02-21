@@ -1,5 +1,5 @@
 Phase 3
-Make use of Docker inheritance 
+Make use of Docker inheritance
 
 Inside passenger folder:
 docker build -t="irbtodo/passenger" .
