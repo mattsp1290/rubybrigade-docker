@@ -1,11 +1,16 @@
 # rubybrigade-docker
-Phase 1
-Simple TO-DO List Application
+Phase 2
+Move Application To Docker
 
-Created from commands:
-rails new app
-rails generate scaffold Todo title:string notes:text
+Inside app folder:
+docker build -t="irbtodo/phase2" .
+docker run -dit -p 80:80 irbtodo/phase2
 
 Files edited:
-+ app/Gemfile
-+ app/db/seeds.rb
++ config/database.yml
++ config/secrets.yml
++ docker/config/app.conf
++ docker/config/nginx.conf
++ docker/config/passenger.conf
++ Dockerfile
++ Gemfile
