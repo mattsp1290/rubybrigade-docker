@@ -1,0 +1,12 @@
+test:
+  working_dir: /usr/share/nginx/app
+  environment:
+    - RAILS_ENV=test
+  image: irbtodo/phase6
+  command: >
+    bash -l -c "
+    /usr/share/nginx/app/bin/bundle exec rake log:clear tmp:clear;
+    /usr/share/nginx/app/bin/bundle exec rake db:version || { bundle exec rake db:setup; };
+    /usr/share/nginx/app/bin/bundle exec rspec -r rspec_junit_formatter --format RspecJunitFormatter -o tests.xml;
+    ls -a
+    "

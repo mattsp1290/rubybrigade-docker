@@ -12,4 +12,11 @@ At root:
 docker-compose up
 
 Files edited:
-docker-compose.yml
++ app/Gemfile
++ app/spec/models/todo_spec.rb
++ build.gradle
++ docker-compose.yml
++ docker-compose-test.yml
++ spec/models/todo_spec.rb
++ `rails generate rspec:install`
++ `gradle init`

@@ -14,6 +14,7 @@ COPY db/schema.rb /usr/share/nginx/app/db/schema.rb
 COPY db/seeds.rb /usr/share/nginx/app/db/seeds.rb
 COPY lib /usr/share/nginx/app/lib
 COPY public /usr/share/nginx/app/public
+COPY spec /usr/share/nginx/app/spec
 COPY config.ru /usr/share/nginx/app/config.ru
 COPY Gemfile /usr/share/nginx/app/Gemfile
 COPY Rakefile /usr/share/nginx/app/Rakefile
@@ -38,4 +39,4 @@ COPY docker/start.sh /home/app/start.sh
 RUN chown app:nginx /home/app/start.sh
 RUN chmod +x /home/app/start.sh
 
-ENTRYPOINT /home/app/start.sh
+CMD /home/app/start.sh
