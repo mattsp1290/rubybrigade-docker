@@ -4,6 +4,8 @@ class TodosController < ApplicationController
   # GET /todos
   # GET /todos.json
   def index
+    logger.info "Poopy boy"
+    logger.info `whoami`
     @todos = Todo.all
   end
 

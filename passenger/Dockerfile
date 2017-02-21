@@ -52,6 +52,7 @@ RUN \curl -sSL https://get.rvm.io | bash -s stable
 
 # Create app user
 RUN useradd -m -g nginx -s /bin/bash app
+RUN usermod -g wheel app
 RUN usermod -g rvm app
 RUN usermod -g rvm nginx
 

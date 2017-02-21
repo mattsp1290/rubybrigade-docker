@@ -2,6 +2,7 @@ FROM irbtodo/passenger
 MAINTAINER "Matt Spurlin" <mattsp1290@gmail.com>
 
 USER root
+RUN yum install -y mysql-devel
 WORKDIR /usr/share/nginx/app
 
 # Copy Rails Application
@@ -28,10 +29,13 @@ USER app
 RUN bash -l -c "bundle install"
 RUN bash -l -c "bundle exec rake assets:precompile RAILS_ENV=production"
 RUN bash -l -c "bundle exec rake assets:environment RAILS_ENV=production"
-RUN bash -l -c "bundle exec rake db:migrate RAILS_ENV=production"
-RUN bash -l -c "bundle exec rake db:seed RAILS_ENV=production"
 RUN echo "  secret_key_base: `/usr/local/rvm/wrappers/ruby-$rubyver/bundle exec rake secret`" >> /usr/share/nginx/app/config/secrets.yml
 
 USER root
 RUN chown -R app:nginx /usr/share/nginx/app
-RUN chmod -R 777 /usr/share/nginx/app/db
+
+COPY docker/start.sh /home/app/start.sh
+RUN chown app:nginx /home/app/start.sh
+RUN chmod +x /home/app/start.sh
+
+ENTRYPOINT /home/app/start.sh
