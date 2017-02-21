@@ -1,0 +1,71 @@
+ext {
+    buildKey = System.env.bamboo_buildKey ? System.env.bamboo_buildKey : System.env.USER
+    buildNumber = System.env.bamboo_buildNumber ? System.env.bamboo_buildNumber : ""
+    buildGroup = ("$buildKey" + (buildNumber ? "-$buildNumber" : ""))
+    buildRepoBranch = System.env.bamboo_repository_branch_name
+
+    containerName = buildGroup.toLowerCase().replaceAll("-", "")
+    tests = System.env.tests ? System.env.tests : '/usr/share/nginx/app/tests.xml'
+}
+
+task testingGradleBuilds(type:Exec) {
+    doFirst {
+        throw new Exception("Build Number: $buildNumber | Build Group: $buildGroup | Build Key: $buildKey | Branch: $buildRepoBranch | Test Dir: $testDir")
+    }
+}
+
+task runTestContainer(type:Exec) {
+    doFirst {
+        workingDir './'
+        commandLine 'bash', '-c', "source ~/.bash_profile;docker-compose -f docker-compose-test.yml -p $containerName up"
+    }
+}
+
+task getTests(type:Exec, dependsOn: [runTestContainer]) {
+
+    doFirst {
+        // Retrieve test results. This task copies junit.xml and coverage.xml from the running container to the bamboo build agent for
+        // Bamboo to parse the results.
+        //
+        println("Retrieving unit test results from container: ${containerName}")
+        workingDir './'
+        commandLine 'docker', 'cp', "${containerName}_test_1:${tests}", './'
+    }
+}
+
+task destroyContainer(type:Exec) {
+    doFirst {
+        workingDir './'
+        commandLine 'bash', '-c', "docker ps -a|grep ${containerName}|awk '{print \$1}'|xargs docker rm"
+    }
+}
+
+task destroyImage(type:Exec) {
+    doFirst {
+        workingDir './'
+        commandLine 'bash', '-c', "docker images|grep ${containerName}|awk '{print \$1}'|xargs docker rmi"
+    }
+}
+
+task buildTest(dependsOn: [getTests]) {
+    // Starting point to:
+    //
+    // 1. buildTestImage
+    // 2. runContainer
+    // 3. getTests
+    // 4. destroyContainer
+    // 5. destroyImage
+}
+
+task bambooBuild(dependsOn: [buildTest]) {
+    // This task triggers the running of (in order)
+    // 1. buildTest
+}
+
+// Always destroy images/container on failure
+//
+buildTest.finalizedBy destroyContainer
+
+bambooBuild.finalizedBy destroyContainer
+
+destroyContainer.finalizedBy destroyImage
