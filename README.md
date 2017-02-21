@@ -1,21 +1,14 @@
 # rubybrigade-docker
-Phase 4
-Rid ourselves of sqlite3
-
-TODO: Fix issue with mysql not running at the same time
+Phase 5
+Probably want to back up MySQL at some point..maybe?
 
 Inside passenger folder:
 docker build -t="irbtodo/passenger" .
 
 Inside app folder:
-docker build -t="irbtodo/phase4" .
+docker build -t="irbtodo/phase5" .
 
 At root:
 docker-compose up
 
 Files edited:
-+ app/config/database.yml
-+ app/docker/start.sh
-+ app/Dockerfile
-+ app/Gemfile
-+ docker-compose.yml
